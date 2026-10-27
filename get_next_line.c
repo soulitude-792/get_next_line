@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: imigdady <imigdady@learner.42.tech>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/10/27 13:19:29 by imigdady          #+#    #+#             */
+/*   Updated: 2026/10/27 14:21:48 by imigdady         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 char *ft_strjoin(char *s1, char *s2)
 {
 	size_t	len1;
@@ -59,11 +71,11 @@ char *extract_line(char *stash)
 	char	*extra_string;
 
 	i = 0;
-	while(stash[i] != '\0' || stash[i] != '\n')
+	while(stash[i] != '\0' && stash[i] != '\n')
 		i++;
-	splitted_stash = (char *)malloc(i + 1);
+	splitted_stash = (char *)malloc(i + 2);
 	k = 0;
-	while(i > k)
+	while(k <= i)
 	{
 		splitted_stash[k] = stash[k];
 		k++;
@@ -72,7 +84,15 @@ char *extract_line(char *stash)
 	while(stash[i] != '\0')
 		i++;
 	extra_string = (char *)malloc(i - k);
-
+	k = 0;
+	while(k < i)
+	{
+		extra_string[k] = stash[k];
+		k++;
+	}
+	free(stash);
+	stash = extra_string;
+	return (splitted_stash);
 }
 
 char *get_next_line(int fd)
@@ -98,7 +118,8 @@ char *get_next_line(int fd)
 		temp_string = ft_strjoin(stash, buffer);
 		free(stash);
 		stash = temp_string;
-		extracted_line = extract_line(stash);
-		return (extracted_line);
 	}
-}
+	extracted_line = extract_line(stash);
+	return (extracted_line);
+
+}	
